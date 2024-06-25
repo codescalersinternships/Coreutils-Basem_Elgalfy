@@ -2,10 +2,10 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 )
 
 func checkError(err error) {
@@ -19,6 +19,9 @@ func main() {
 	var fileName string
 	var n int
 
+	flag.IntVar(&n, "n", 10, "Number of lines to print")
+	flag.Parse()
+
 	// Check if the number of arguments is correct
 	if len(os.Args) != 4 && len(os.Args) != 2 {
 		log.Fatal("Usage: head <filename> or head -n <filename> <number>")
@@ -29,18 +32,14 @@ func main() {
 			log.Fatal("Invalid option provided " + os.Args[1])
 		}
 
-		fileName = os.Args[2]
-		numberOfLines, err := strconv.Atoi(os.Args[3])
-		checkError(err)
-		n = numberOfLines
+		fileName = os.Args[3]
 	} else {
 		fileName = os.Args[1]
-		n = 10
 	}
 
 	file, err := os.Open(fileName)
-
 	checkError(err)
+	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 
@@ -51,7 +50,5 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-
-	file.Close()
 
 }
