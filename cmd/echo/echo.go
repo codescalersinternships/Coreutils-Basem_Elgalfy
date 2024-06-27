@@ -7,14 +7,14 @@ import (
 )
 
 func main() {
-	var n bool
-	flag.BoolVar(&n, "n", false, "If specified omits the trailing newline")
+	var omitTrailingLine bool
+	flag.BoolVar(&omitTrailingLine, "n", false, "If specified omits the trailing newline")
 	flag.Parse()
 
 	out := strings.Join(flag.Args(), " ")
 	fmt.Print(out)
 
-	if !n {
+	if !omitTrailingLine {
 		fmt.Println()
 	}
 

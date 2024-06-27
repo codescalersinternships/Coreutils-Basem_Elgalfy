@@ -9,12 +9,6 @@ import (
 	"os"
 )
 
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 func printFileContents(reader io.Reader, n bool) {
 
 	scanner := bufio.NewScanner(reader)
@@ -31,20 +25,22 @@ func printFileContents(reader io.Reader, n bool) {
 }
 func main() {
 
-	var n bool
-	flag.BoolVar(&n, "n", false, "Numbers output lines")
+	var numberOfLines bool
+	flag.BoolVar(&numberOfLines, "n", false, "Numbers output lines")
 	flag.Parse()
 
 	if len(flag.Args()) == 0 {
-		printFileContents(os.Stdin, n)
+		printFileContents(os.Stdin, numberOfLines)
 		return
 	}
 
 	for _, arg := range flag.Args() {
 		file, err := os.Open(arg)
-		checkError(err)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		printFileContents(file, n)
+		printFileContents(file, numberOfLines)
 		file.Close()
 	}
 
