@@ -45,7 +45,7 @@ func main() {
 		checkError(err)
 
 		printFileContents(file, n)
-		file.Close()
+		defer file.Close()
 	}
 
 }
