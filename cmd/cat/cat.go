@@ -41,7 +41,7 @@ func main() {
 		}
 
 		printFileContents(file, numberOfLines)
-		file.Close()
+		defer file.Close()
 	}
 
 }
