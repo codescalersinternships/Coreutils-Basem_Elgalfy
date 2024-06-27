@@ -8,12 +8,6 @@ import (
 	"os"
 )
 
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 func main() {
 	var fileName string
 	var n int
@@ -22,22 +16,16 @@ func main() {
 	flag.Parse()
 
 	// Check if the number of arguments is correct
-	if len(os.Args) != 4 && len(os.Args) != 2 {
+	if len(flag.Args()) != 1 {
 		log.Fatal("Usage: tail <filename> or tail -n <number> <filename>")
 	}
 
-	if len(os.Args) == 4 {
-		if os.Args[1] != "-n" {
-			log.Fatal("Invalid option provided " + os.Args[1])
-		}
-
-		fileName = os.Args[3]
-	} else {
-		fileName = os.Args[1]
-	}
+	fileName = flag.Args()[0]
 
 	file, err := os.Open(fileName)
-	checkError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)

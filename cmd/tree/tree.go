@@ -8,11 +8,6 @@ import (
 	"os"
 )
 
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 func printTree(maxLevel int, path string, currentLevel int, indent string) (directoryCount int, fileCount int) {
 
 	if currentLevel > maxLevel {
@@ -20,7 +15,9 @@ func printTree(maxLevel int, path string, currentLevel int, indent string) (dire
 	}
 
 	files, err := os.ReadDir(path)
-	checkError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	dcount, fcount := 0, 0
 
@@ -56,11 +53,11 @@ func printTree(maxLevel int, path string, currentLevel int, indent string) (dire
 
 func main() {
 
-	var l int
-	flag.IntVar(&l, "L", math.MaxInt, "Number of Levels to traverse")
+	var numberOfLevels int
+	flag.IntVar(&numberOfLevels, "L", math.MaxInt, "Number of Levels to traverse")
 	flag.Parse()
 
-	if l <= 0 {
+	if numberOfLevels <= 0 {
 		log.Fatal("Number of levels must be greater than 0")
 	}
 
@@ -75,7 +72,7 @@ func main() {
 		root = flag.Arg(0)
 	}
 
-	directoryCount, fileCount := printTree(l, root, 1, "")
+	directoryCount, fileCount := printTree(numberOfLevels, root, 1, "")
 	fmt.Printf("\n%d directories, %d files\n", directoryCount, fileCount)
 
 }
